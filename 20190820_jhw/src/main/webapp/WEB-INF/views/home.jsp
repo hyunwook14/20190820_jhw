@@ -14,7 +14,7 @@
 		<h4>정제 대상 파일 목록</h4>
 		<ul>
 			<li>
-				<form action="/Home" method="post">
+				<form action="/hdfs-test/Home" method="post">
 					<input type="hidden" name="file_name" value="1987.csv">
 					<input type="submit" value="1987.csv">
 				</form>
