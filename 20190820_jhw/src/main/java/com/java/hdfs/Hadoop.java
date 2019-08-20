@@ -54,22 +54,27 @@ public class Hadoop {
 			 * 3) 성공 시 결과 받기 : resultData()
 			 **************************************************/
 			
-			fileCopy(fileName);
-			try {
-				mapReduser();
-				String a =resultData();
-				System.out.println(a);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			if(fileCopy(fileName)) {
+				
+				try {
+					if(mapReduser()) {
+						String a =resultData();
+						status=2;
+						resultMap.put("a", a);
+					}else {
+						status=1;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			
+			}else {
+				status=1;
+			}
 			
 		}
 		resultMap.put("status", status);
+		
 		
 		
 		
@@ -94,6 +99,11 @@ public class Hadoop {
 			// 파일시스템 정보 정의
 			localSystem = FileSystem.getLocal(localConf);
 			hadoopSystem = FileSystem.get(hadoopConf);
+			
+			if(hadoopSystem.exists(outputPath)) {
+				hadoopSystem.delete(outputPath);				
+			}
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,7 +163,7 @@ public class Hadoop {
 		FileInputFormat.addInputPath(job, inputPath);
 	    FileOutputFormat.setOutputPath(job, outputPath);
 	    
-	    System.out.println();
+	    
 	    
 		System.out.println("Hadoop.mapReduser() >> End");
 		// 처리 결과 보내기
@@ -174,7 +184,7 @@ public class Hadoop {
 			int byteRead = 0;
 			while((byteRead = fsis.read()) > 0) { 
 				// 정제 결과를 문자열 변수에 담기
-				sb.append(byteRead);
+				sb.append((char)byteRead);
 			}
 			System.out.println(sb);
 			fsis.close();

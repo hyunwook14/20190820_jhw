@@ -20,17 +20,16 @@ public class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 		String[] values = value.toString().split(",");
 		// 출력 키에 넣을 문자열 변수
 		String strKey = values[8];
-		System.out.println("s1 "+strKey);
 		String strKey2 = values[21];
-		System.out.println("s2 "+strKey2);
+		// 출력 키에 문자열 변수 적용
+		textKey.set(strKey);
 		if("0".equals(strKey2)) {
-			// 출력 키에 문자열 변수 적용
-			textKey.set(strKey);
+			// 전체 결과 출력하기
+			context.write(textKey, intValue);
 		}
 		
 		
-		// 전체 결과 출력하기
-		context.write(textKey, intValue);
+		
 	}
 	
 }
