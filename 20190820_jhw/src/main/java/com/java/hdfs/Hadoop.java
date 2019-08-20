@@ -23,7 +23,7 @@ public class Hadoop {
 	protected Configuration localConf = null;
 	// hadoop 접속 주소 (hadoop server ip 수정 할것) <<<<<<<<<<<<<<<<<<
 	protected final String URL = "hdfs://192.168.3.207:9000";
-	protected final String LOCAL = "/root/data/";
+	protected final String LOCAL = "C:\\Users\\GD7\\Desktop\\data\\";
 	// hadoop 정제 대상 경로 / 처리 결과 저장 경로 및 파일
 	protected final String INPUT = "/input/";
 	protected final String OUTPUT = "/output";
@@ -54,15 +54,18 @@ public class Hadoop {
 			 * 3) 성공 시 결과 받기 : resultData()
 			 **************************************************/
 			
+			fileCopy(fileName);
 			try {
-				if(fileCopy(fileName)) {
-					
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
+				mapReduser();
+				String a =resultData();
+				System.out.println(a);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			
-			
 			
 			
 		}
@@ -91,6 +94,7 @@ public class Hadoop {
 			// 파일시스템 정보 정의
 			localSystem = FileSystem.getLocal(localConf);
 			hadoopSystem = FileSystem.get(hadoopConf);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = false;
@@ -148,6 +152,9 @@ public class Hadoop {
 		// 원본 및 대상 경로 정의
 		FileInputFormat.addInputPath(job, inputPath);
 	    FileOutputFormat.setOutputPath(job, outputPath);
+	    
+	    System.out.println();
+	    
 		System.out.println("Hadoop.mapReduser() >> End");
 		// 처리 결과 보내기
 		return job.waitForCompletion(true);
@@ -169,6 +176,7 @@ public class Hadoop {
 				// 정제 결과를 문자열 변수에 담기
 				sb.append(byteRead);
 			}
+			System.out.println(sb);
 			fsis.close();
 		}
 		System.out.println("Hadoop.resultData() >> End");

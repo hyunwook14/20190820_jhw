@@ -17,10 +17,18 @@ public class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 	
 	@Override
 	protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, IntWritable>.Context context) throws IOException, InterruptedException {
+		String[] values = value.toString().split(",");
 		// 출력 키에 넣을 문자열 변수
-		String strKey = "";
-		// 출력 키에 문자열 변수 적용
-		textKey.set(strKey);
+		String strKey = values[8];
+		System.out.println("s1 "+strKey);
+		String strKey2 = values[21];
+		System.out.println("s2 "+strKey2);
+		if("0".equals(strKey2)) {
+			// 출력 키에 문자열 변수 적용
+			textKey.set(strKey);
+		}
+		
+		
 		// 전체 결과 출력하기
 		context.write(textKey, intValue);
 	}
