@@ -69,7 +69,7 @@ public class Hadoop {
 				}
 			
 			}else {
-				status=1;
+				status=3;
 			}
 			
 		}
